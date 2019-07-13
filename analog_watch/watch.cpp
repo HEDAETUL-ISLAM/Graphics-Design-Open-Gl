@@ -51,16 +51,32 @@ void circle(){
 	glColor3ub(14, 102, 85);
 	glVertex2f(.0f , .5f);//12
 	glVertex2f(.0f , .4f);
+	glVertex2f(.001f , .5f);//12
+	glVertex2f(.001f , .4f);
+	glVertex2f(-.001f , .5f);//12
+	glVertex2f(-.001f , .4f);
 	glVertex2f(.0f , -.5f);//6
 	glVertex2f(.0f , -.4f);
+	glVertex2f(.001f , -.5f);//6
+	glVertex2f(.001f , -.4f);
+	glVertex2f(-.001f , -.5f);//6
+	glVertex2f(-.001f , -.4f);
 	glEnd();
 
 	glBegin(GL_LINES);
 	glColor3ub(14, 102, 85);
 	glVertex2f(.4f , .0f);//3
 	glVertex2f(.5f , .0f);
+	glVertex2f(.4f , .001f);//3
+	glVertex2f(.5f , .001f);
+	glVertex2f(.4f , -.001f);//3
+	glVertex2f(.5f , -.001f);
 	glVertex2f(-.4f , .0f);//9
 	glVertex2f(-.5f , .0f);
+	glVertex2f(-.4f , .001f);//9
+	glVertex2f(-.5f , .001f);
+	glVertex2f(-.4f , -.001f);//9
+	glVertex2f(-.5f , -.001f);
 	glEnd();
 
 	glBegin(GL_LINES);
