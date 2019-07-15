@@ -1,4 +1,4 @@
-#include <windows.h>
+
 #include <iostream>
 #include <GL/glut.h>
 #include <math.h>
@@ -19,7 +19,16 @@ float meghY = 0;
 int sunStatus = 0;
 float sunX = 0;
 float sunY = 0;
+//////bird
+int birdsStatus = 0;
+float birdsX = 0;
+float birdsY = 0;
 //////
+
+
+
+
+
 void DrawCircle(float cx, float cy, float r, int num_segments) {
 
 	glBegin(GL_TRIANGLE_FAN);
@@ -211,6 +220,7 @@ void oposite_village()
     DrawCircle(360, 279, 3, 6000);
     glEnd();
     glFlush();
+    
     //////house 1st
     glColor3ub (144, 164, 174);
     glBegin(GL_POLYGON);//roof
@@ -269,7 +279,7 @@ void river()
 void road()
 {
     //////road
-    glColor3ub (87, 81, 92);
+    glColor3ub (126, 81, 9);
     glBegin(GL_QUADS);
     glVertex2i(0, 0);
     glVertex2i(640, 0);
@@ -285,36 +295,7 @@ void road()
     glVertex2i(640, 60);
     glVertex2i(0, 60);
     glEnd();
-    //////road devider
-    glColor3ub (252, 252, 252);
-    glBegin(GL_LINES);
-    glVertex2i(0, 25);
-    glVertex2i(40, 25);
-    glVertex2i(50, 25);
-    glVertex2i(90, 25);
-    glVertex2i(100, 25);
-    glVertex2i(140, 25);
-    glVertex2i(150, 25);
-    glVertex2i(190, 25);
-    glVertex2i(200, 25);
-    glVertex2i(240, 25);
-    glVertex2i(250, 25);
-    glVertex2i(290, 25);
-    glVertex2i(300, 25);
-    glVertex2i(340, 25);
-    glVertex2i(350, 25);
-    glVertex2i(390, 25);
-    glVertex2i(400, 25);
-    glVertex2i(440, 25);
-    glVertex2i(450, 25);
-    glVertex2i(490, 25);
-    glVertex2i(500, 25);
-    glVertex2i(540, 25);
-    glVertex2i(550, 25);
-    glVertex2i(590, 25);
-    glVertex2i(600, 25);
-    glVertex2i(640, 25);
-    glEnd();
+    
     glFlush();
 }
 void house()
@@ -1015,11 +996,13 @@ void moveSun()
 {
 	if (sunStatus == 1)
 	{
-		if (sunY >= 300)
+		if (sunY >= 300){
 			sunX = 300;
-		else
+        }
+		else{
             sunX -= 1.5;
 			sunY += .5;
+        }
 
 	}
 	glPushMatrix();
@@ -1028,6 +1011,234 @@ void moveSun()
 	glPopMatrix();
 	glFlush();
 }
+///////////////////////////// birds
+void birds(int x)
+{
+    //////////////////////1st bird
+    glColor3ub (0, 0, 0);
+	DrawCircle(60, 300, 3, 1000);
+	DrawCircle(63, 300, 2, 1000);
+	glBegin(GL_LINES);
+	glLineWidth(5);
+	glVertex2i(60, 300);
+    glVertex2i(65, 307);
+
+    glVertex2i(60, 300);
+    glVertex2i(55, 307);
+    glEnd();
+	///////////////////////2nd bird
+	DrawCircle(70, 310, 3, 1000);
+	DrawCircle(73, 310, 2, 1000);
+	glBegin(GL_LINES);
+	glVertex2i(70, 310);
+    glVertex2i(75, 317);
+
+    glVertex2i(70, 310);
+    glVertex2i(65, 317);
+    glEnd();
+	//////////////////////////3rd bird
+	DrawCircle(75, 290, 3, 1000);
+	DrawCircle(78, 290, 2, 1000);
+	glBegin(GL_LINES);
+	glVertex2i(75, 290);
+    glVertex2i(80, 297);
+
+    glVertex2i(75, 290);
+    glVertex2i(70, 297);
+    glEnd();
+	//////////////////////////////4th bird
+	DrawCircle(90, 300, 3, 1000);
+	DrawCircle(93, 300, 2, 1000);
+	glBegin(GL_LINES);
+	glVertex2i(90, 300);
+    glVertex2i(95, 307);
+
+    glVertex2i(90, 300);
+    glVertex2i(85, 307);
+    glEnd();
+	/////////////////////////////5th bird
+	DrawCircle(75, 320, 3, 1000);
+	DrawCircle(78, 320, 2, 1000);
+	glBegin(GL_LINES);
+	glVertex2i(75, 320);
+    glVertex2i(80, 327);
+
+    glVertex2i(75, 320);
+    glVertex2i(70, 327);
+    glEnd();
+}
+//////////////////////////////move bird
+void movebirds()
+{
+	if (birdsStatus == 1)
+        {
+            birdsX += 2;
+        }
+	if (birdsX>2000)
+        {
+            birdsX = -200;
+        }
+	glPushMatrix();
+	glTranslatef(birdsX, birdsY, 0);
+	birds(1);
+	glPopMatrix();
+}
+
+//////////////moving algorithms
+void keyboard(unsigned char key, int x, int y)
+
+{
+	if (key == 'S' || key == 's')		//sun start
+	{
+		sunStatus = 1;
+	}
+
+	else if (key == 'N' || key == 'n')		//sun  stOP
+	{
+		sunStatus = 0;
+	}
+
+
+	else if (key == 'C' || key == 'c')		//megh start
+
+	{
+		meghStatus = 1;
+	}
+	else if (key == 'e' || key == 'E')		//megh STOP
+
+	{
+		meghStatus = 0;
+	}
+
+	///////////////////////////////////////////////////////
+
+		else if (key == 'R' || key == 'r')		////water strt
+		////water strt
+	{
+		waterStatus = 1;
+	}
+	else if (key == 'T' || key == 't')		//water stop
+
+	{
+		waterStatus = 0;
+	}
+
+	//////////////////////////////////////////////////////////
+
+			else if (key == 'X' || key == 'x')		////car strt
+
+	{
+		carStatus = 1;
+	}
+	else if (key == 'Y' || key == 'y')		//car stop
+
+	{
+		carStatus = 0;
+	}
+
+		///////////////////////////////////////////////////////
+
+    else if (key == 'B' || key == 'b')		////bird strt
+
+	{
+		birdsStatus = 1;
+	}
+	else if (key == 'G' || key == 'g')		//bird stop
+
+	{
+		birdsStatus = 0;
+	}
+}
+////////////////// vera
+void vera()
+{
+   ////1st vera
+    glColor3ub (208, 216, 219);////////body
+	DrawCircle(200, 150, 10, 1000);
+	glEnd();
+	glColor3ub (20, 50, 10);//////head
+	DrawCircle(212, 150, 5, 1000);
+	glEnd();
+
+	glColor3ub (0, 0, 10);//////////mouth
+	DrawCircle(212, 145, 2, 1000);
+	glEnd();
+
+	glColor3ub (0, 0, 0);
+	DrawCircle(215, 155, 2, 1000);//////////right ear
+	glEnd();
+	glColor3ub (0, 0, 0);////////////left ear
+	DrawCircle(209, 155, 2, 1000);
+	glEnd();
+	glColor3ub (0, 0, 10);////////legs from L.H.S
+	glBegin(GL_LINES);
+	glVertex2i(193, 130);
+	glVertex2i(193, 142);
+
+	glVertex2i(196, 130);
+	glVertex2i(196, 140);
+
+	glVertex2i(203, 130);
+	glVertex2i(203, 140);
+
+	glVertex2i(206, 130);
+	glVertex2i(206, 142);
+    glEnd();
+    glFlush();
+    glColor3ub (255, 255, 255);////////eyes
+	glBegin(GL_POINTS);
+	glVertex2i(210, 150);
+	glVertex2i(214, 150);
+    glEnd();
+    glFlush();
+    ////////////2nd vera
+    glColor3ub (208, 216, 219);////////body
+	DrawCircle(240, 150, 10, 1000);
+	glEnd();
+	glColor3ub (20, 50, 10);//////head
+	DrawCircle(230, 150, 5, 1000);
+	glEnd();
+
+	glColor3ub (0, 0, 10);//////////mouth
+	DrawCircle(230, 145, 2, 1000);
+	glEnd();
+
+	glColor3ub (0, 0, 0);
+	DrawCircle(233, 155, 2, 1000);//////////right ear
+	glEnd();
+	glColor3ub (0, 0, 0);////////////left ear
+	DrawCircle(227, 155, 2, 1000);
+	glEnd();
+	glColor3ub (0, 0, 10);////////legs from L.H.S
+	glBegin(GL_LINES);
+	glVertex2i(235, 130);
+	glVertex2i(235, 142);
+
+	glVertex2i(238, 130);
+	glVertex2i(238, 140);
+
+	glVertex2i(245, 130);
+	glVertex2i(245, 140);
+
+	glVertex2i(248, 130);
+	glVertex2i(248, 143);
+    glEnd();
+    glFlush();
+    glColor3ub (255, 255, 255);////////eyes
+	glBegin(GL_POINTS);
+	glVertex2i(228, 150);
+	glVertex2i(232, 150);
+    glEnd();
+    glFlush();
+    ///////////////////////////////////////////////verar shadow
+    glColor3ub (0, 77, 64);////////body
+	DrawCircle(180, 110, 15, 1000);
+
+	glColor3ub (0, 77, 64);////////body
+	DrawCircle(220, 110, 15, 1000);
+	glEnd();
+
+}
 void myDisplay(void){
     sky();
     hills();
@@ -1035,18 +1246,23 @@ void myDisplay(void){
     oposite_village();
     moveSun();
     land();
+    vera();
     river();
     movewater();
+    shipyard();
+    movebirds();
     tree();
     road();
-    house();
-    shipyard();
-    movemegh();
-    movecar();
 
+    movemegh();
+    house();
+    movecar();
+    glFlush();
     glutPostRedisplay();
     glutSwapBuffers();
 }
+
+
 void myInit(void){
     glClearColor(1.0f,1.0f,1.0f,1.0f);
     glColor3f(.0f,.0f,.0f);
@@ -1059,10 +1275,11 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(640,480);
+    glutInitWindowSize(1920,1080);
     glutCreateWindow("Village Scene");
     glutPostRedisplay();
     glutDisplayFunc(myDisplay);
+    glutKeyboardFunc(keyboard);
     myInit();
     glutMainLoop();
     return 0;
