@@ -1,0 +1,160 @@
+#include<windows.h>
+#include<cstdio>
+#include <GL/gl.h>
+#include <GL/glut.h>
+#include<math.h>
+#define PI  3.1416
+
+GLfloat positionCarOne = 0.0f;
+GLfloat positioncarTwo = 0.0f;
+GLfloat positionBirdOne = 0.0f;
+GLfloat positionBirdTwo = 0.0f;
+GLfloat speed1 = 0.1f;
+GLfloat speed2 = 0.1f;
+GLfloat speed3 = 0.1f;
+GLfloat speed4 = 0.1f;
+
+void updateLeft(int value) {
+    if(positionCarOne <-1.0)
+        positionCarOne = 1.0f;
+    positionCarOne -= speed1;
+	glutPostRedisplay();
+	glutTimerFunc(100, updateLeft, 0);
+}
+void updateRight(int value) {
+    if(positioncarTwo >1.0)
+        positioncarTwo = -1.0f;
+    positioncarTwo += speed2;
+	glutPostRedisplay();
+	glutTimerFunc(100, updateRight, 0);
+}
+void updateBirdOne(int value) {
+    if(positionBirdOne >1.0)
+        positionBirdOne = -1.0f;
+    positionBirdOne += speed3;
+	glutPostRedisplay();
+	glutTimerFunc(100, updateBirdOne, 0);
+}
+void updateBirdTwo(int value) {
+    if(positionBirdTwo <-1.0)
+        positionBirdTwo = 1.0f;
+    positionBirdTwo -= speed4;
+	glutPostRedisplay();
+	glutTimerFunc(100, updateBirdTwo, 0);
+}
+
+void circle(GLfloat x,GLfloat y,GLfloat radius,int triangleAmount){
+    	GLfloat twicePi = 2.0f * PI;
+
+	glBegin(GL_TRIANGLE_FAN);
+
+		glVertex2f(x, y);
+		for(int i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+		            x + (radius * cos(i *  twicePi / triangleAmount)),
+			    y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+}
+
+void init() {
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void road(){
+    glBegin(GL_QUADS);
+    glColor3ub(46, 64, 83);
+    glVertex2f(-1.0f,1.0f);
+    glVertex2f( -1.0f, -1.0f);
+    glVertex2f(  1.0f, -1.0f);
+    glVertex2f(1.0f, 1.0f);
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3ub(214, 219, 223);
+    glVertex2f(-1.0f, .0f);
+    glVertex2f(1.0f, .0f);
+    glEnd();
+    glFlush();
+}
+void bird(){
+    glLoadIdentity();
+    glPushMatrix();
+    glTranslatef(0.0, positionBirdOne,0.0f);
+    glBegin(GL_TRIANGLES);
+    glColor3ub(46, 204, 113);
+    glVertex2f(-.8f, .4f);
+    glVertex2f(-.7f, .4f);
+    glVertex2f(-.75f, .5f);
+    glEnd();
+    glLoadIdentity();
+    glTranslatef(0.0, positionBirdTwo,0.0f);
+    glBegin(GL_TRIANGLES);
+    glColor3ub(46, 204, 113);
+    glVertex2f(.8f, -.4f);
+    glVertex2f(.7f, -.4f);
+    glVertex2f(.75f,- .5f);
+    glEnd();
+    glPopMatrix();
+    glFlush();
+}
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+    road();
+    bird();
+    glLoadIdentity();
+    glPushMatrix();
+    glTranslatef(positionCarOne,0.0, 0.0f);
+
+
+    glBegin(GL_QUADS); //////////first car body
+    glColor3ub(205, 97, 85);
+    glVertex2f(-0.3f, 0.4f);
+    glVertex2f( -0.3f, 0.2f);
+    glVertex2f( 0.3f,  0.2f);
+    glVertex2f(0.3f,  0.4f);
+    glEnd();
+    glColor3ub(179, 182, 183);
+    circle(-.15f, 0.2f, .05f, 100);
+    glEnd();
+    glColor3ub(179, 182, 183);
+    circle(.15f, 0.2f, .05f, 100);
+    glEnd();
+
+    glLoadIdentity();
+    glTranslatef(positioncarTwo,0.0, 0.0f);
+    glBegin(GL_QUADS);//////////////////second car body
+    glColor3ub(205, 97, 85);
+    glVertex2f(-0.3f, -0.1f);
+    glVertex2f( -0.3f, -0.3f);
+    glVertex2f( 0.3f,  -0.3f);
+    glVertex2f(0.3f,  -0.1f);
+    glEnd();
+    glColor3ub(179, 182, 183);
+    circle(-.15f, -0.3f, .05f, 100);
+    glEnd();
+    glColor3ub(179, 182, 183);
+    circle(.15f, -0.3f, .05f, 100);
+    glEnd();
+    glPopMatrix();
+
+    glFlush();
+}
+
+
+
+int main(int argc, char** argv) {
+   glutInit(&argc, argv);
+   glutCreateWindow("Translation Animation");
+   glutInitWindowSize(320, 320);
+   glutDisplayFunc(display);
+   init();
+   glutTimerFunc(100, updateLeft, 0);
+   glutTimerFunc(100, updateRight, 0);
+   glutTimerFunc(100, updateBirdOne, 0);
+   glutTimerFunc(100, updateBirdTwo, 0);
+   glutMainLoop();
+   return 0;
+}
+
