@@ -1,4 +1,3 @@
-
 #include<cstdio>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -77,8 +76,7 @@ void snowEffect(int value) {
 	glutTimerFunc(100, snowEffect, 0);
 }
 
-
-void skySea(){
+void sky(){
     glBegin(GL_QUADS);//////////////////////////sky
     glColor3ub(162, 217, 206);
     glVertex2f(-1.0f,1.0f);
@@ -86,41 +84,8 @@ void skySea(){
     glVertex2f(  1.0f, .0f);
     glVertex2f(1.0f, 1.0f);
     glEnd();
-    glBegin(GL_TRIANGLES);/////////////////////1st mountain
-    glColor3ub(229, 152, 102);
-    glVertex2f(-1.0f, .0f);
-    glVertex2f(-.8f, .3f);
-    glVertex2f(-.6f, .0f);
-    glEnd();
-    glBegin(GL_TRIANGLES);////////////////////3rd mountain
-    glColor3ub(229, 152, 102);
-    glVertex2f(-.4f, .0f);
-    glVertex2f(-.2f, .3f);
-    glVertex2f(-.0f, .0f);
-    glEnd();
-    glBegin(GL_TRIANGLES);////////////////////2nd mountain
-    glColor3ub(220, 118, 51);
-    glVertex2f(-.7f, .0f);
-    glVertex2f(-.5f, .4f);
-    glVertex2f(-.3f, .0f);
-    glEnd();
-    glBegin(GL_QUADS);////////////////////////mountain bottom border
-    glColor3ub(31, 97, 141);
-    glVertex2f(-1.0f, .0f);
-    glVertex2f( -1.0f, -1.0f);
-    glVertex2f(  1.0f, -1.0f);
-    glVertex2f( 1.0f, .0f);
-    glEnd();
-    glBegin(GL_QUADS);///////////////////////sea water
-    glColor3ub(175, 96, 26);
-    glVertex2f(-1.0f, .01f);
-    glVertex2f( -1.0f, -.01f);
-    glVertex2f(  -.0f, .0f);
-    glVertex2f( -.0f, .01f);
-    glEnd();
-
-    glPushMatrix();
-    glLoadIdentity();
+}
+void seaFlow(){
     glBegin(GL_LINES);  ////////////////// 1st row
     glColor3ub(127, 179, 213);
     glVertex2f(-0.9f,-0.1f);
@@ -228,9 +193,47 @@ void skySea(){
     glVertex2f(0.1f,-0.9f);
     glVertex2f(0.0f,-0.9f);
     glEnd();
-    glPopMatrix();
     glFlush();
 }
+
+void sea(){
+    glBegin(GL_QUADS);////////////////////////sea water
+    glColor3ub(31, 97, 141);
+    glVertex2f(-1.0f, .0f);
+    glVertex2f( -1.0f, -1.0f);
+    glVertex2f(  1.0f, -1.0f);
+    glVertex2f( 1.0f, .0f);
+    glEnd();
+}
+void mountain(){
+    glBegin(GL_TRIANGLES);/////////////////////1st mountain
+    glColor3ub(229, 152, 102);
+    glVertex2f(-1.0f, .0f);
+    glVertex2f(-.8f, .3f);
+    glVertex2f(-.6f, .0f);
+    glEnd();
+    glBegin(GL_TRIANGLES);////////////////////3rd mountain
+    glColor3ub(229, 152, 102);
+    glVertex2f(-.4f, .0f);
+    glVertex2f(-.2f, .3f);
+    glVertex2f(-.0f, .0f);
+    glEnd();
+    glBegin(GL_TRIANGLES);////////////////////2nd mountain
+    glColor3ub(220, 118, 51);
+    glVertex2f(-.7f, .0f);
+    glVertex2f(-.5f, .4f);
+    glVertex2f(-.3f, .0f);
+    glEnd();
+    glBegin(GL_QUADS);///////////////////////mountain bottom border
+    glColor3ub(175, 96, 26);
+    glVertex2f(-1.0f, .01f);
+    glVertex2f( -1.0f, -.01f);
+    glVertex2f(  -.0f, .0f);
+    glVertex2f( -.0f, .01f);
+    glEnd();
+    glFlush();
+}
+
 void snowMove(){//////////////////////////////snow
     glPushMatrix();
     glLoadIdentity();
@@ -266,7 +269,7 @@ void snowMove(){//////////////////////////////snow
     circle(.9f, 1.0f, .01f, 100);
     circle(.91f, 1.01f, .01f, 100);
     circle(.92f, 1.0f, .01f, 100);
-    
+
     glEnd();
     glPopMatrix();
     glFlush();
@@ -305,7 +308,7 @@ void cloudRightMove(){//////////////////////cloud right move slow
     glEnd();
     glPopMatrix();
     glFlush();
-    
+
 }
 void cloudLeftMove(){/////////////////////////////////cloud left move faster
     glLoadIdentity();
@@ -340,7 +343,7 @@ void cloudLeftMove(){/////////////////////////////////cloud left move faster
     glEnd();
     glPopMatrix();
     glFlush();
-    
+
 }
 
 void shipShiftRight(){/////////////////////////////////ship right move slow
@@ -414,31 +417,47 @@ void shipShiftLeft(){///////////////////////////////ship left move faster
     glFlush();
 }
 void displayLeft() {/////////////////////////////left move
-    glClear(GL_COLOR_BUFFER_BIT);
-    skySea();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_LIGHTING);//Enable Light Effect
+    GLfloat global_ambient1[] = {0.0,3.0,3.0,.0};//ambient RGBA intensity of light
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient1);//A lighting model parameter.
+    sky();
+    glDisable(GL_LIGHTING);//Enable Light Effect
+
+    glEnable(GL_LIGHTING);//Enable Light Effect
+    GLfloat global_ambient2[] = {1.0,1.0,2.0,.0};//ambient RGBA intensity of light
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient2);//A lighting model parameter.
+    sea();
+    glDisable(GL_LIGHTING);//Enable Light Effect
+
+
+
+    mountain();
+    seaFlow();
     cloudLeftMove();
     shipShiftLeft();
     snowMove();
     glFlush();
-    glutSwapBuffers();
 }
 void displayRight() {//////////////////////////////right move
     glClear(GL_COLOR_BUFFER_BIT);
-    skySea();
+    sky();
+    sea();
+    mountain();
+    seaFlow();
     cloudRightMove();
     shipShiftRight();
     snowMove();
     glFlush();
-    glutSwapBuffers();
 }
 
 void SpecialInput(int key, int x, int y){
     switch(key){
     case GLUT_KEY_UP:
-        
+
     break;
     case GLUT_KEY_DOWN:
-        
+
     break;
     case GLUT_KEY_LEFT:
         glutDisplayFunc(displayLeft);
@@ -452,10 +471,10 @@ void SpecialInput(int key, int x, int y){
 
 int main(int argc, char** argv) {
    glutInit(&argc, argv);
+//   glutReshapeWindow(1080,720);
+    glutInitWindowSize(500,500);
    glutCreateWindow("Mini View");
-   glutReshapeWindow(1920,1080);
-//    glutInitWindowSize(320,320);
-   glutDisplayFunc(displayRight);/////////////////normaly right move 
+   glutDisplayFunc(displayRight);/////////////////normaly right move
    init();
     glutSpecialFunc(SpecialInput);
    glutTimerFunc(100, cloudMoveRight, 0);
